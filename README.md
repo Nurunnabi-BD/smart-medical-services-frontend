@@ -1,4 +1,4 @@
-# 🏥 Smart Healthcare Platform
+# 🏥 Smart Medical Service Platform
 
 A modern and responsive Smart Healthcare web application built with React, Tailwind CSS, and DaisyUI. This platform helps users easily access healthcare services, connect with doctors, manage appointments, and explore medical information through a clean and user-friendly interface.
 
@@ -6,7 +6,7 @@ A modern and responsive Smart Healthcare web application built with React, Tailw
 
 # 🚀 Live Demo
 
-🔗 Live Website: https://your-live-link.com
+🔗 Live Website: https://smart-medical-services-project.vercel.app/
 
 ---
 
@@ -58,4 +58,3 @@ src/
  ├── utils/
  ├── App.jsx
  └── main.jsx
- 
