@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import LoginRegistration from "./components/Login";
 import Register from "./components/Register";
+import ServicesPage from "./pages/Services";
+import ContactPage from "./pages/Contact";
 import "./App.css";
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
         <Route path="/About" element={<About />} />
         <Route path="/login" element={<LoginRegistration />} />
         <Route path="/Register" element={<Register/>}/>
+        <Route path="/Services" element={<ServicesPage/>}/>
+        <Route path="/Contact" element={<ContactPage/>}/>
       </Routes>
       <Footer />
     </div>

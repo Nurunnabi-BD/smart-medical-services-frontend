@@ -9,11 +9,25 @@ import { FaArrowRight } from "react-icons/fa";
 import { FaRegMessage } from "react-icons/fa6";
 import { FaUserMd } from "react-icons/fa";
 import { GiMedicinePills } from "react-icons/gi";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaTimes } from "react-icons/fa";
 import { FaRegCalendarDays } from "react-icons/fa6";
 import { MdOutlineHealthAndSafety } from "react-icons/md";
+import { useState } from "react";
 
 function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    desc: "",
+    details: "",
+  });
+  const openModal = (title, desc, details) => {
+    setModalData({ title, desc, details });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <>
       <section className="bg-[#f4f7fb] flex items-center justify-center">
@@ -105,7 +119,19 @@ function Home() {
                 Easily book appointments with our experienced doctors.
               </p>
 
-              <button className="flex items-center justify-center gap-2 text-[#0C8CE9] font-semibold mt-4 mx-auto hover:gap-3 transition-all">
+              <button
+                onClick={() =>
+                  openModal(
+                    "Book Appointment",
+                    "Easily book appointments with experienced doctors anytime from anywhere.",
+                    `✔ Easy online booking
+✔ Verified specialist doctors
+✔ Instant confirmation
+✔ 24/7 support system`,
+                  )
+                }
+                className="flex items-center justify-center gap-2 text-[#0C8CE9] font-semibold mt-4 mx-auto hover:gap-3 transition-all"
+              >
                 Learn More <FaArrowRight size={16} />
               </button>
             </div>
@@ -124,7 +150,19 @@ function Home() {
                 Consult doctors online from home easily.
               </p>
 
-              <button className="flex items-center justify-center gap-2 text-[#0C8CE9] font-semibold mt-4 mx-auto hover:gap-3 transition-all">
+              <button
+                onClick={() =>
+                  openModal(
+                    "Online Consultation",
+                    "Consult doctors online from home easily.",
+                    `✔ HD video calling system
+✔ Secure private consultation
+✔ No need to visit hospital
+✔ Available anytime anywhere`,
+                  )
+                }
+                className="flex items-center justify-center gap-2 text-[#0C8CE9] font-semibold mt-4 mx-auto hover:gap-3 transition-all"
+              >
                 Learn More <FaArrowRight size={16} />
               </button>
             </div>
@@ -143,7 +181,20 @@ function Home() {
                 Find specialist doctors based on your needs.
               </p>
 
-              <button className="flex items-center justify-center gap-2 text-[#0C8CE9] font-semibold mt-4 mx-auto hover:gap-3 transition-all">
+              <button
+                onClick={() =>
+                  openModal(
+                    "Find Doctors",
+                    "Find specialist doctors based on your needs.",
+                    `✔ Search doctors by specialty (Cardiology, Neurology, etc.)
+✔ View doctor profiles, experience, and ratings
+✔ Filter by location and availability
+✔ Instant appointment booking system
+✔ Verified and trusted medical professionals`,
+                  )
+                }
+                className="flex items-center justify-center gap-2 text-[#0C8CE9] font-semibold mt-4 mx-auto hover:gap-3 transition-all"
+              >
                 Learn More <FaArrowRight size={16} />
               </button>
             </div>
@@ -162,7 +213,20 @@ function Home() {
                 Get medicine delivered to your doorstep.
               </p>
 
-              <button className="flex items-center justify-center gap-2 text-[#0C8CE9] font-semibold mt-4 mx-auto hover:gap-3 transition-all">
+              <button
+                onClick={() =>
+                  openModal(
+                    "Pharmacy Delivery",
+                    "Get medicine delivered to your doorstep.",
+                    `✔ Fast home delivery service
+✔ Genuine and verified medicines
+✔ Upload prescription easily
+✔ 24/7 order support system
+✔ Cash on delivery & online payment available`,
+                  )
+                }
+                className="flex items-center justify-center gap-2 text-[#0C8CE9] font-semibold mt-4 mx-auto hover:gap-3 transition-all"
+              >
                 Learn More <FaArrowRight size={16} />
               </button>
             </div>
@@ -170,9 +234,11 @@ function Home() {
 
           {/* 🔥 CTA BUTTON (SECTION END) */}
           <div className="mt-12 md:mt-16">
-            <button className="bg-[#0C8CE9] text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition  w-full sm:w-auto">
-              Explore All Services
-            </button>
+            <Link to="/services">
+              <button className="bg-[#0C8CE9] text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition w-full sm:w-auto">
+                Explore All Services
+              </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -290,6 +356,36 @@ function Home() {
           </div>
         </div>
       </section>
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white w-full max-w-lg rounded-3xl p-8 relative shadow-2xl">
+            <button
+              onClick={closeModal}
+              className="absolute top-5 right-5 text-gray-500 hover:text-red-500 text-2xl"
+            >
+              <FaTimes />
+            </button>
+
+            <h2 className="text-2xl font-bold text-[#0C8CE9] mb-4">
+              {modalData.title}
+            </h2>
+
+            <p className="text-gray-600 mb-4">{modalData.desc}</p>
+
+            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-gray-700 whitespace-pre-line">
+              {modalData.details}
+            </div>
+
+            <button
+              onClick={closeModal}
+              className="mt-6 w-full bg-[#0C8CE9] text-white py-3 rounded-2xl hover:bg-blue-700 transition"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -17,83 +17,79 @@ const About = () => {
     <section className="bg-[#f8fbff] overflow-hidden ">
       {/* Modal */}
       {openModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4 py-6 overflow-y-auto">
-          <div className="bg-white w-full max-w-2xl rounded-[28px] p-5 sm:p-7 md:p-8 relative shadow-2xl animate-[fadeIn_.3s_ease]">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4 py-6 overflow-y-auto">
+          <div className="bg-white w-full max-w-2xl rounded-[28px] p-6 sm:p-8 relative shadow-2xl animate-[fadeIn_.3s_ease]">
             {/* Close Button */}
             <button
               onClick={() => setOpenModal(false)}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-red-100 text-red-500 w-9 h-9 sm:w-10 sm:h-10 rounded-full hover:bg-red-500 hover:text-white transition flex items-center justify-center"
+              className="absolute top-4 right-4 bg-red-100 text-red-500 w-10 h-10 rounded-full hover:bg-red-500 hover:text-white transition flex items-center justify-center"
             >
               ✕
             </button>
 
-            {/* Content */}
+            {/* Header Badge */}
             <div className="text-center">
-              <div className="inline-block bg-blue-100 text-[#0C8CE9] text-[10px] sm:text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wide">
+              <div className="inline-block bg-blue-100 text-[#0C8CE9] text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wide">
                 Smart Medical Platform
               </div>
 
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mt-5 text-black font-main leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-extrabold mt-5 text-gray-900 leading-tight">
                 Advanced Healthcare For Everyone
               </h2>
 
-              <p className="text-gray-600 mt-4 sm:mt-5 leading-7 text-sm sm:text-base font-p max-w-xl mx-auto">
+              <p className="text-gray-600 mt-4 leading-7 text-sm sm:text-base max-w-xl mx-auto">
                 We provide trusted healthcare solutions with experienced
                 doctors, online appointment systems, emergency support, secure
                 medical records and modern hospital facilities.
               </p>
+            </div>
 
-              {/* Features */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-7 sm:mt-8">
-                <div className="bg-[#f8fbff] p-4 sm:p-5 rounded-2xl">
-                  <h3 className="font-bold text-[#0C8CE9] text-base sm:text-lg">
-                    Expert Doctors
-                  </h3>
-
-                  <p className="text-sm text-gray-600 mt-2 leading-6">
-                    Professional and experienced medical specialists.
-                  </p>
-                </div>
-
-                <div className="bg-[#f8fbff] p-4 sm:p-5 rounded-2xl">
-                  <h3 className="font-bold text-[#0C8CE9] text-base sm:text-lg">
-                    Emergency Support
-                  </h3>
-
-                  <p className="text-sm text-gray-600 mt-2 leading-6">
-                    Fast emergency response for urgent situations.
-                  </p>
-                </div>
-
-                <div className="bg-[#f8fbff] p-4 sm:p-5 rounded-2xl">
-                  <h3 className="font-bold text-[#0C8CE9] text-base sm:text-lg">
-                    Secure Records
-                  </h3>
-
-                  <p className="text-sm text-gray-600 mt-2 leading-6">
-                    Safe and private patient medical information.
-                  </p>
-                </div>
-
-                <div className="bg-[#f8fbff] p-4 sm:p-5 rounded-2xl">
-                  <h3 className="font-bold text-[#0C8CE9] text-base sm:text-lg">
-                    Online Appointment
-                  </h3>
-
-                  <p className="text-sm text-gray-600 mt-2 leading-6">
-                    Book appointments anytime from anywhere.
-                  </p>
-                </div>
+            {/* Features */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+              <div className="bg-blue-50 p-5 rounded-2xl hover:shadow-md transition">
+                <h3 className="font-bold text-[#0C8CE9] text-lg">
+                  👨‍⚕️ Expert Doctors
+                </h3>
+                <p className="text-sm text-gray-600 mt-2">
+                  Professional and experienced medical specialists.
+                </p>
               </div>
 
-              {/* Bottom Button */}
-              <button
-                onClick={() => setOpenModal(false)}
-                className="mt-7 sm:mt-8 bg-[#0C8CE9] hover:bg-[#0a7ad0] text-white px-7 sm:px-8 py-3 rounded-full font-semibold transition w-full sm:w-auto"
-              >
-                Close
-              </button>
+              <div className="bg-purple-50 p-5 rounded-2xl hover:shadow-md transition">
+                <h3 className="font-bold text-purple-600 text-lg">
+                  🚑 Emergency Support
+                </h3>
+                <p className="text-sm text-gray-600 mt-2">
+                  Fast emergency response for urgent situations.
+                </p>
+              </div>
+
+              <div className="bg-green-50 p-5 rounded-2xl hover:shadow-md transition">
+                <h3 className="font-bold text-green-600 text-lg">
+                  🔐 Secure Records
+                </h3>
+                <p className="text-sm text-gray-600 mt-2">
+                  Safe and private patient medical information.
+                </p>
+              </div>
+
+              <div className="bg-yellow-50 p-5 rounded-2xl hover:shadow-md transition">
+                <h3 className="font-bold text-yellow-600 text-lg">
+                  📅 Online Appointment
+                </h3>
+                <p className="text-sm text-gray-600 mt-2">
+                  Book appointments anytime from anywhere.
+                </p>
+              </div>
             </div>
+
+            {/* Bottom Button */}
+            <button
+              onClick={() => setOpenModal(false)}
+              className="mt-8 bg-[#0C8CE9] hover:bg-[#0a7ad0] text-white px-8 py-3 rounded-full font-semibold transition w-full"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}

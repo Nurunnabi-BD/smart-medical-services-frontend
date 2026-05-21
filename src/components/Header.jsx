@@ -13,7 +13,8 @@ const Header = () => {
     { name: "Find Doctors", path: "/find-doctors" },
     { name: "Pharmacy", path: "/pharmacy" },
     { name: "Services", path: "/services" },
-    { name: "About", path: "/about" },
+    { name: "About Us", path: "/about" },
+    { name: "Contact", path: "/contact" },
   ];
 
   const navClass = ({ isActive }) =>
