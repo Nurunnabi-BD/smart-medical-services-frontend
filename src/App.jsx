@@ -3,9 +3,10 @@ import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import Login from "./pages/Login"
 import About from "./pages/About";
-import "./App.css"
+import LoginRegistration from "./components/Login";
+import Register from "./components/Register";
+import "./App.css";
 
 function App() {
   return (
@@ -14,8 +15,9 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/About" element={<About/>} />
+        <Route path="/About" element={<About />} />
+        <Route path="/login" element={<LoginRegistration />} />
+        <Route path="/Register" element={<Register/>}/>
       </Routes>
       <Footer />
     </div>
