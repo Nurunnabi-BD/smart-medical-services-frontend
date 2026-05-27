@@ -6,7 +6,7 @@ A modern and responsive Smart Healthcare web application built with React, Tailw
 
 # 🚀 Live Demo
 
-🔗 Live Website: https://smart-medical-services-project.vercel.app/
+🔗 Live Website: https://smart-medical-services-frontend.vercel.app
 
 ---
 
