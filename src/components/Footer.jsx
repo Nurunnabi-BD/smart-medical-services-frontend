@@ -45,7 +45,7 @@ const Footer = () => {
 
             <li>
               <Link
-                to="/doctors"
+                to="/find-doctors"
                 className="hover:text-[#0C8CE9] duration-300"
               >
                 Find Doctors

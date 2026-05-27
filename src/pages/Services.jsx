@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import {
   FaArrowRight,
   FaUserMd,
@@ -11,6 +13,7 @@ import {
 } from "react-icons/fa";
 
 export default function ServicesPage() {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
     title: "",
@@ -151,11 +154,29 @@ export default function ServicesPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-[#0C8CE9] font-semibold px-8 py-4 rounded-2xl hover:bg-blue-100 transition">
+            <button
+              onClick={() => navigate("/find-doctors")}
+              className="bg-white text-[#0C8CE9] font-semibold px-8 py-4 rounded-2xl hover:bg-blue-100 transition"
+            >
               Book Appointment
             </button>
 
-            <button className="bg-blue-800 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-blue-900 transition">
+            <button
+              onClick={() =>
+                Swal.fire({
+                  title: "Emergency Support Helpline",
+                  html: `
+                    <p className='mb-2 font-semibold text-gray-600'>Call our emergency desk immediately:</p>
+                    <h3 className='text-2xl font-bold text-red-500'>+880 1568 430775</h3>
+                    <p className='text-xs text-gray-400 mt-2'>Ambulance and critical care units are active 24/7.</p>
+                  `,
+                  icon: "warning",
+                  confirmButtonColor: "#EF4444",
+                  confirmButtonText: "Close Helpline",
+                })
+              }
+              className="bg-blue-800 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-blue-900 transition"
+            >
               Emergency Call
             </button>
           </div>

@@ -1,20 +1,29 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { FaUserCircle, FaBell } from "react-icons/fa";
+import { FaUserCircle, FaBell, FaShoppingCart } from "react-icons/fa";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
+import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 import Logo from "../assets/logo.png";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const { cartCount, setShowCartDrawer } = useCart();
 
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "Find Doctors", path: "/find-doctors" },
-    { name: "Pharmacy", path: "/pharmacy" },
+    ...(user && user.role === "patient" ? [{ name: "Find Doctors", path: "/find-doctors" }] : []),
     { name: "Services", path: "/services" },
+    { name: "Pharmacy", path: "/pharmacy" },
     { name: "About Us", path: "/about" },
     { name: "Contact", path: "/contact" },
+    ...(user ? [
+      user.role === "patient" ? { name: "Dashboard", path: "/user" } :
+      user.role === "doctor" ? { name: "Doctor Dashboard", path: "/doctor-dashboard" } :
+      { name: "Admin Dashboard", path: "/admin-dashboard" }
+    ] : [])
   ];
 
   const navClass = ({ isActive }) =>
@@ -61,20 +70,48 @@ const Header = () => {
           {/* RIGHT */}
           <div className="flex items-center gap-3">
             {/* Notification */}
-            <button className="relative w-11 h-11 rounded-full border border-[#0C8CE9] text-[#0C8CE9] flex items-center justify-center hover:bg-[#0C8CE9] hover:text-white transition-all duration-300">
-              <FaBell className="text-lg" />
+            {user && (
+              <button className="relative w-11 h-11 rounded-full border border-[#0C8CE9] text-[#0C8CE9] flex items-center justify-center hover:bg-[#0C8CE9] hover:text-white transition-all duration-300">
+                <FaBell className="text-lg" />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+              </button>
+            )}
 
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+            {/* Cart Button */}
+            <button
+              onClick={() => setShowCartDrawer(true)}
+              className="relative w-11 h-11 rounded-full border border-[#0C8CE9] text-[#0C8CE9] flex items-center justify-center hover:bg-[#0C8CE9] hover:text-white transition-all duration-300"
+            >
+              <FaShoppingCart className="text-lg" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">
+                  {cartCount}
+                </span>
+              )}
             </button>
 
-            {/* Login Button */}
-            <Link
-              to="/login"
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0C8CE9] text-white font-medium shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
-            >
-              <FaUserCircle className="text-lg" />
-              Login / Register
-            </Link>
+            {/* User Session Action */}
+            {user ? (
+              <div className="flex items-center gap-3">
+                <span className="hidden sm:inline font-semibold text-gray-700 text-sm bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100">
+                  Hi, {user.name.split(" ")[0]}
+                </span>
+                <button
+                  onClick={logout}
+                  className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-500 text-white font-medium shadow-md hover:bg-red-600 transition-all duration-300 text-sm"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0C8CE9] text-white font-medium shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+              >
+                <FaUserCircle className="text-lg" />
+                Login / Register
+              </Link>
+            )}
 
             {/* Mobile Menu Button */}
             <button
@@ -90,7 +127,7 @@ const Header = () => {
       {/* MOBILE MENU */}
       <div
         className={`lg:hidden overflow-hidden transition-all duration-500 bg-white border-t border-gray-100 ${
-          open ? "max-h-[400px] py-4" : "max-h-0"
+          open ? "max-h-[450px] py-4" : "max-h-0"
         }`}
       >
         <div className="px-6 space-y-5">
@@ -109,16 +146,34 @@ const Header = () => {
             </NavLink>
           ))}
 
-          <Link
-            to="/login"
-            onClick={() => setOpen(false)}
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-[#0C8CE9] text-white font-medium"
-          >
-            <FaUserCircle />
-            Login / Register
-          </Link>
+          {user ? (
+            <div className="space-y-3 pt-2">
+              <div className="text-center font-semibold text-gray-700 text-sm bg-blue-50 py-2 rounded-xl">
+                Logged in as: {user.name} ({user.role})
+              </div>
+              <button
+                onClick={() => {
+                  logout();
+                  setOpen(false);
+                }}
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-red-500 text-white font-medium"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-[#0C8CE9] text-white font-medium"
+            >
+              <FaUserCircle />
+              Login / Register
+            </Link>
+          )}
         </div>
       </div>
+
     </header>
   );
 };

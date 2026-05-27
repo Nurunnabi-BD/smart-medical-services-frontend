@@ -1,5 +1,5 @@
 import "../assets/style/home.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import bgImage from "../assets/home-bg.png";
 import sideImage from "../assets/side.png";
 import { FaRegSquareCheck } from "react-icons/fa6";
@@ -15,6 +15,7 @@ import { MdOutlineHealthAndSafety } from "react-icons/md";
 import { useState } from "react";
 
 function Home() {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
     title: "",
@@ -65,12 +66,18 @@ function Home() {
             </p>
 
             <div className="flex flex-wrap gap-4 mt-8">
-              <button className="bg-[#0C8CE9] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition flex items-center gap-2">
+              <button
+                onClick={() => navigate("/find-doctors")}
+                className="bg-[#0C8CE9] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition flex items-center gap-2"
+              >
                 <FaRegSquareCheck size={22} />
                 Book Appointment
               </button>
 
-              <button className="border-2 border-[#0C8CE9] text-[#0C8CE9] hover:bg-[#0C8CE9] hover:text-white bg-white px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2">
+              <button
+                onClick={() => navigate("/pharmacy")}
+                className="border-2 border-[#0C8CE9] text-[#0C8CE9] hover:bg-[#0C8CE9] hover:text-white bg-white px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2"
+              >
                 <FaCartPlus size={22} />
                 Order Medicine
               </button>
