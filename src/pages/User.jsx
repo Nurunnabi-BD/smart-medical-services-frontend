@@ -558,11 +558,11 @@ const PatientDashboard = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[#eef3fb] p-6 relative font-main">
+    <div className="min-h-screen bg-[#eef3fb] p-4 sm:p-6 relative font-main">
       {/* Welcome Header */}
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-black leading-tight">
+          <h1 className="text-3xl sm:text-4xl font-bold text-black leading-tight">
             Welcome back,{" "}
             <span className="text-[#0C8CE9]">{user.name.split(" ")[0]}!</span>
           </h1>
@@ -585,46 +585,46 @@ const PatientDashboard = () => {
             {/* Profile Card */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div className="flex gap-5">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 w-full">
                   {user.image ? (
                     <img
                       src={user.image}
                       alt={user.name}
-                      className="w-24 h-24 rounded-full object-cover border bg-sky-50 shadow-inner"
+                      className="w-24 h-24 rounded-full object-cover border bg-sky-50 shadow-inner shrink-0"
                     />
                   ) : (
-                    <div className="w-24 h-24 rounded-full border bg-blue-100 text-[#0C8CE9] flex items-center justify-center font-bold text-3xl shadow-inner">
+                    <div className="w-24 h-24 rounded-full border bg-blue-100 text-[#0C8CE9] flex items-center justify-center font-bold text-3xl shadow-inner shrink-0">
                       {user.name.charAt(0)}
                     </div>
                   )}
 
-                  <div>
+                  <div className="flex flex-col items-center sm:items-start text-center sm:text-left w-full">
                     <h2 className="text-2xl font-bold text-gray-800">
                       {user.name}
                     </h2>
 
-                    <div className="space-y-2 mt-4 text-gray-600 text-sm font-semibold">
-                      <p className="flex items-center gap-2">
+                    <div className="space-y-2 mt-4 text-gray-600 text-sm font-semibold w-full">
+                      <p className="flex items-center gap-2 justify-center sm:justify-start">
                         <FaEnvelope className="text-gray-400" />
                         {user.email}
                       </p>
 
-                      <p className="flex items-center gap-2">
+                      <p className="flex items-center gap-2 justify-center sm:justify-start">
                         <FaPhoneAlt className="text-gray-400" />
                         {user.phone || "No phone number added"}
                       </p>
 
-                      <p className="flex items-center gap-2">
+                      <p className="flex items-center gap-2 justify-center sm:justify-start">
                         <FaMapMarkerAlt className="text-gray-400" />
                         {user.location || "No address added"}
                       </p>
 
-                      <p className="flex items-center gap-2">
+                      <p className="flex items-center gap-2 justify-center sm:justify-start">
                         <FaCalendarAlt className="text-gray-400" />
                         {user.dob || "No DOB added"}
                       </p>
 
-                      <p className="flex items-center gap-2">
+                      <p className="flex items-center gap-2 justify-center sm:justify-start">
                         <FaTint className="text-red-500" />
                         Blood Group: <span className="text-red-500 font-bold">{user.blood || "N/A"}</span>
                       </p>
@@ -633,17 +633,17 @@ const PatientDashboard = () => {
                 </div>
 
                 {/* Actions container */}
-                <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+                <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto">
                   <button
                     onClick={() => setShowChatModal(true)}
-                    className="bg-[#0C8CE9] border-2 border-[#0C8CE9] text-white font-bold px-6 py-2.5 rounded-xl hover:bg-blue-600 hover:border-blue-600 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+                    className="flex-1 md:flex-none bg-[#0C8CE9] border-2 border-[#0C8CE9] text-white font-bold px-6 py-2.5 rounded-xl hover:bg-blue-600 hover:border-blue-600 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
                   >
                     <FaRegComments />
                     My Chats
                   </button>
                   <button
                     onClick={() => setOpenEdit(true)}
-                    className="border-2 border-[#0C8CE9] text-[#0C8CE9] font-bold px-6 py-2.5 rounded-xl hover:bg-[#0C8CE9] hover:text-white transition-all duration-300 text-sm"
+                    className="flex-1 md:flex-none border-2 border-[#0C8CE9] text-[#0C8CE9] font-bold px-6 py-2.5 rounded-xl hover:bg-[#0C8CE9] hover:text-white transition-all duration-300 text-sm text-center"
                   >
                     Edit Profile
                   </button>
@@ -672,10 +672,10 @@ const PatientDashboard = () => {
                   appointments.slice(0, 2).map((item) => (
                     <div
                       key={item._id}
-                      className="border border-gray-100 rounded-2xl p-4 flex items-center justify-between hover:shadow-md transition duration-300"
+                      className="border border-gray-100 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md transition duration-300"
                     >
                       <div className="flex gap-4">
-                        <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center font-bold text-xl">
+                        <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center font-bold text-xl shrink-0">
                           {item.doctor?.name ? item.doctor.name.charAt(0) : "D"}
                         </div>
 
@@ -698,7 +698,7 @@ const PatientDashboard = () => {
                         </div>
                       </div>
 
-                      <div className="flex flex-col items-end gap-2">
+                      <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100">
                         <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${
                           item.status === "approved" ? "bg-green-100 text-green-600" :
                           item.status === "rejected" ? "bg-red-100 text-red-600" :
@@ -754,10 +754,10 @@ const PatientDashboard = () => {
                   prescriptions.slice(0, 2).map((item) => (
                     <div
                       key={item._id}
-                      className="border border-gray-100 rounded-2xl p-4 flex items-center justify-between hover:shadow-md transition duration-300"
+                      className="border border-gray-100 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md transition duration-300"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="bg-blue-100 text-blue-500 p-4 rounded-xl">
+                        <div className="bg-blue-100 text-blue-500 p-4 rounded-xl shrink-0">
                           <FaFilePrescription size={20} />
                         </div>
                         <div>
@@ -767,10 +767,10 @@ const PatientDashboard = () => {
                         </div>
                       </div>
 
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100">
                         <button
                           onClick={() => setSelectedPrescription(item)}
-                          className="border-2 border-[#0C8CE9] text-[#0C8CE9] font-bold px-4 py-2 rounded-xl hover:bg-[#0C8CE9] hover:text-white transition"
+                          className="flex-1 sm:flex-initial text-center border-2 border-[#0C8CE9] text-[#0C8CE9] font-bold px-4 py-2 rounded-xl hover:bg-[#0C8CE9] hover:text-white transition text-sm"
                         >
                           View
                         </button>
@@ -779,7 +779,7 @@ const PatientDashboard = () => {
                             generatePrescriptionText(item)
                           )}` : "#"}
                           download={`Prescription-${item.diagnosis.replace(/\s+/g, '_')}-${item.date}.txt`}
-                          className="bg-[#0C8CE9] text-white font-bold px-4 py-2 rounded-xl hover:bg-blue-600 transition text-center flex items-center justify-center"
+                          className="flex-1 sm:flex-initial text-center bg-[#0C8CE9] text-white font-bold px-4 py-2 rounded-xl hover:bg-blue-600 transition text-sm flex items-center justify-center"
                         >
                           Download
                         </a>
@@ -812,29 +812,29 @@ const PatientDashboard = () => {
                   reports.map((report) => (
                     <div
                       key={report._id}
-                      className="border border-gray-100 rounded-2xl p-4 flex items-center justify-between hover:shadow-md transition bg-gray-50/50"
+                      className="border border-gray-100 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md transition bg-gray-50/50"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="bg-orange-100 text-orange-500 p-3 rounded-xl">
+                      <div className="flex items-center gap-3 w-full sm:w-auto">
+                        <div className="bg-orange-100 text-orange-500 p-3 rounded-xl shrink-0">
                           <FaFileMedical size={20} />
                         </div>
-                        <div>
-                          <h4 className="font-bold text-black text-sm truncate max-w-[150px]">{report.title}</h4>
+                        <div className="min-w-0">
+                          <h4 className="font-bold text-black text-sm truncate max-w-[150px] sm:max-w-[200px]">{report.title}</h4>
                           <p className="text-xs text-gray-400 font-semibold">{report.date}</p>
                         </div>
                       </div>
 
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 w-full sm:w-auto justify-end sm:justify-start pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100/50">
                         <a
                           href={report.fileUrl}
                           download={`${report.title}.txt`}
-                          className="text-xs font-bold text-[#0C8CE9] hover:underline bg-white border px-3 py-1.5 rounded-lg shadow-sm"
+                          className="flex-1 sm:flex-initial text-center text-xs font-bold text-[#0C8CE9] hover:underline bg-white border px-3 py-1.5 rounded-lg shadow-sm font-semibold"
                         >
                           View
                         </a>
                         <button
                           onClick={() => handleDeleteReport(report._id)}
-                          className="text-red-500 hover:text-red-700 bg-white border p-2 rounded-lg shadow-sm"
+                          className="text-red-500 hover:text-red-700 bg-white border p-2 rounded-lg shadow-sm flex items-center justify-center"
                         >
                           <FaTrash size={12} />
                         </button>
@@ -993,8 +993,8 @@ const PatientDashboard = () => {
 
       {/* ================= EDIT PROFILE MODAL ================= */}
       {openEdit && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white w-full max-w-3xl rounded-2xl p-8 relative shadow-2xl border">
+        <div className="fixed inset-0 bg-black/40 flex items-start sm:items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white w-full max-w-3xl rounded-2xl p-6 sm:p-8 relative shadow-2xl border my-8">
             {/* Close Button */}
             <button
               onClick={() => setOpenEdit(false)}
@@ -1201,8 +1201,8 @@ const PatientDashboard = () => {
 
       {/* ================= ALL APPOINTMENTS MODAL ================= */}
       {showAppointments && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white w-full max-w-2xl rounded-2xl p-6 relative border shadow-2xl max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/40 flex items-start sm:items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white w-full max-w-2xl rounded-2xl p-6 relative border shadow-2xl max-h-[85vh] overflow-y-auto my-8">
             <button
               onClick={() => setShowAppointments(false)}
               className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
@@ -1215,7 +1215,7 @@ const PatientDashboard = () => {
               {appointments.map((item) => (
                 <div
                   key={item._id}
-                  className="border rounded-2xl p-4 flex justify-between items-center bg-gray-50/50 hover:shadow-md transition"
+                  className="border rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50/50 hover:shadow-md transition"
                 >
                   <div>
                     <h3 className="font-bold text-black">{item.doctor?.name || "Doctor"}</h3>
@@ -1225,7 +1225,7 @@ const PatientDashboard = () => {
                     </p>
                   </div>
 
-                  <div className="flex flex-col items-end gap-2">
+                  <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100">
                     <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${
                       item.status === "approved" ? "bg-green-100 text-green-600" :
                       item.status === "rejected" ? "bg-red-100 text-red-600" :
@@ -1266,8 +1266,8 @@ const PatientDashboard = () => {
 
       {/* ================= ALL PRESCRIPTIONS MODAL ================= */}
       {showPrescriptions && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white w-full max-w-2xl rounded-2xl p-6 relative border shadow-2xl max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/40 flex items-start sm:items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white w-full max-w-2xl rounded-2xl p-6 relative border shadow-2xl max-h-[85vh] overflow-y-auto my-8">
             <button
               onClick={() => setShowPrescriptions(false)}
               className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
@@ -1280,7 +1280,7 @@ const PatientDashboard = () => {
               {prescriptions.map((item) => (
                 <div
                   key={item._id}
-                  className="border rounded-2xl p-4 flex items-center justify-between bg-gray-50/50 hover:shadow-md transition"
+                  className="border rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50/50 hover:shadow-md transition"
                 >
                   <div>
                     <h3 className="font-bold text-black">{item.diagnosis}</h3>
@@ -1288,7 +1288,7 @@ const PatientDashboard = () => {
                     <p className="text-xs text-gray-400 font-semibold mt-0.5">{item.date}</p>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100">
                     <button
                       onClick={() => {
                         setSelectedPrescription(item);
@@ -1317,8 +1317,8 @@ const PatientDashboard = () => {
 
       {/* ================= RX PRESCRIPTION PAD VIEWER MODAL ================= */}
       {selectedPrescription && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative border shadow-2xl max-h-[90vh] overflow-y-auto animate-fadeIn text-slate-700">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start sm:items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative border shadow-2xl max-h-[90vh] overflow-y-auto animate-fadeIn text-slate-700 my-8">
             {/* Close */}
             <button
               onClick={() => setSelectedPrescription(null)}
@@ -1360,8 +1360,8 @@ const PatientDashboard = () => {
             </div>
 
             {/* Table of Medicines */}
-            <div className="overflow-hidden border border-slate-100 rounded-2xl mb-6">
-              <table className="w-full text-left text-xs text-gray-600 bg-white">
+            <div className="overflow-x-auto border border-slate-100 rounded-2xl mb-6">
+              <table className="w-full text-left text-xs text-gray-600 bg-white min-w-[500px]">
                 <thead className="bg-slate-50 text-gray-700 font-bold uppercase border-b border-slate-100">
                   <tr>
                     <th className="p-3">Medicine Name</th>
@@ -1390,10 +1390,10 @@ const PatientDashboard = () => {
             </div>
 
             {/* Print & Download buttons inside modal */}
-            <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+            <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-slate-100">
               <button
                 onClick={() => handlePrintPrescription(selectedPrescription)}
-                className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-6 rounded-xl text-xs flex items-center gap-2 shadow transition"
+                className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-6 rounded-xl text-xs flex items-center justify-center gap-2 shadow transition"
               >
                 Print Prescription
               </button>
@@ -1402,13 +1402,13 @@ const PatientDashboard = () => {
                   generatePrescriptionText(selectedPrescription)
                 )}` : "#"}
                 download={`Prescription-${selectedPrescription.diagnosis.replace(/\s+/g, '_')}-${selectedPrescription.date}.txt`}
-                className="bg-[#0C8CE9] hover:bg-blue-600 text-white font-bold py-2.5 px-6 rounded-xl text-xs flex items-center gap-2 shadow transition text-center flex items-center justify-center"
+                className="w-full sm:w-auto bg-[#0C8CE9] hover:bg-blue-600 text-white font-bold py-2.5 px-6 rounded-xl text-xs flex items-center justify-center gap-2 shadow transition text-center flex items-center justify-center"
               >
                 Download Text
               </a>
               <button
                 onClick={() => setSelectedPrescription(null)}
-                className="border border-gray-200 text-gray-500 hover:bg-gray-50 font-bold py-2.5 px-6 rounded-xl text-xs transition"
+                className="w-full sm:w-auto border border-gray-200 text-gray-500 hover:bg-gray-50 font-bold py-2.5 px-6 rounded-xl text-xs transition text-center"
               >
                 Close
               </button>
@@ -1419,8 +1419,8 @@ const PatientDashboard = () => {
 
       {/* ================= PATIENT CHAT / MESSAGES MODAL ================= */}
       {showChatModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white w-full max-w-4xl rounded-3xl relative border shadow-2xl h-[80vh] flex flex-col overflow-hidden animate-fadeIn text-slate-700 font-main">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start sm:items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white w-full max-w-4xl rounded-3xl relative border shadow-2xl h-[80vh] flex flex-col overflow-hidden animate-fadeIn text-slate-700 font-main my-8">
             {/* Header */}
             <div className="bg-[#0C8CE9] p-5 text-white flex justify-between items-center shrink-0">
               <div className="flex items-center gap-3">
@@ -1445,7 +1445,7 @@ const PatientDashboard = () => {
             <div className="flex-1 flex overflow-hidden">
               
               {/* Doctor contacts sidebar */}
-              <div className="w-72 border-r border-slate-100 flex flex-col shrink-0 bg-slate-50/30">
+              <div className={`w-full md:w-72 border-r border-slate-100 flex flex-col shrink-0 bg-slate-50/30 ${activeChatDoctor ? "hidden md:flex" : "flex"}`}>
                 <div className="p-4 border-b border-slate-100">
                   <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wide">My Consultation Doctors</h3>
                 </div>
@@ -1482,11 +1482,17 @@ const PatientDashboard = () => {
               </div>
 
               {/* Chat messages main window */}
-              <div className="flex-1 flex flex-col bg-slate-50/30">
+              <div className={`flex-1 flex flex-col bg-slate-50/30 ${activeChatDoctor ? "flex" : "hidden md:flex"}`}>
                 {activeChatDoctor ? (
                   <>
                     {/* Header */}
                     <div className="bg-white border-b border-slate-100 px-5 py-3.5 flex items-center gap-3 shrink-0">
+                      <button
+                        onClick={() => setActiveChatDoctor(null)}
+                        className="md:hidden text-slate-500 hover:text-[#0C8CE9] mr-2 p-1 font-bold text-sm flex items-center gap-1 bg-slate-100 rounded-lg hover:bg-slate-200 transition"
+                      >
+                        &larr; Back
+                      </button>
                       <img
                         src={activeChatDoctor.image || "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=250"}
                         alt=""
@@ -1562,8 +1568,8 @@ const PatientDashboard = () => {
 
       {/* ================= PAYMENT CHECKOUT MODAL ================= */}
       {payAppointment && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-fadeIn">
-          <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100 relative p-6 flex flex-col gap-5">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start sm:items-center justify-center z-[100] p-4 overflow-y-auto animate-fadeIn">
+          <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100 relative p-6 flex flex-col gap-5 my-8">
             {/* Close Button */}
             <button
               onClick={() => {
