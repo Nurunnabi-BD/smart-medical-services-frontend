@@ -740,6 +740,48 @@ const DoctorDashboard = () => {
           </div>
         </header>
 
+        {/* Mobile Horizontal Navigation */}
+        <div className="lg:hidden bg-white border-b border-slate-100 px-4 py-2.5 flex items-center gap-2 overflow-x-auto scrollbar-none shrink-0">
+          {[
+            { id: "dashboard", label: "Dashboard", icon: <FaHeartbeat size={14} /> },
+            { id: "appointments", label: "Appointments", icon: <FaCalendarCheck size={14} /> },
+            { id: "patients", label: "Patients", icon: <FaUsers size={14} /> },
+            { id: "schedule", label: "Schedule", icon: <FaClock size={14} /> },
+            { id: "earnings", label: "Earnings", icon: <FaWallet size={14} /> },
+            { id: "reviews", label: "Reviews", icon: <FaStar size={14} /> },
+            { id: "messages", label: "Messages", icon: <FaEnvelope size={14} />, badge: chatContacts.filter(c => c.unread).length },
+            { id: "settings", label: "Settings", icon: <FaCog size={14} /> },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                setSelectedPatientId(null);
+              }}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shrink-0 whitespace-nowrap ${
+                activeTab === item.id
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-100"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 bg-slate-50/50"
+              }`}
+            >
+              {item.icon}
+              <span>{item.label}</span>
+              {item.badge > 0 && (
+                <span className="bg-red-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full ml-1">
+                  {item.badge}
+                </span>
+              )}
+            </button>
+          ))}
+          <button
+            onClick={handleLogoutClick}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold text-red-500 hover:bg-red-50 bg-red-50/20 shrink-0 whitespace-nowrap"
+          >
+            <FaSignOutAlt size={14} />
+            <span>Logout</span>
+          </button>
+        </div>
+
         {/* Dashboard Tabs Main Container */}
         <div className="flex-1 p-6 overflow-y-auto space-y-6">
           

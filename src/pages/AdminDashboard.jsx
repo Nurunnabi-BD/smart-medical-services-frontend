@@ -416,10 +416,10 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-[#eef3fb] p-6 font-main flex flex-col lg:flex-row gap-6">
+      <div className="min-h-screen bg-[#eef3fb] p-4 sm:p-6 font-main flex flex-col lg:flex-row gap-6">
       {/* Sidebar Navigation */}
-      <div className="w-full lg:w-64 bg-white rounded-2xl p-5 shadow-sm border border-gray-100 h-fit space-y-2">
-        <div className="flex items-center gap-3 px-3 py-4 border-b mb-4">
+      <div className="w-full lg:w-64 bg-white rounded-2xl p-4 lg:p-5 shadow-sm border border-gray-100 h-fit flex flex-col gap-2 shrink-0">
+        <div className="flex items-center gap-3 px-3 py-2 lg:py-4 border-b mb-1 lg:mb-4">
           <FaHospital className="text-[#0C8CE9] text-3xl animate-pulse" />
           <div>
             <h2 className="font-bold text-gray-800 leading-tight">Admin System</h2>
@@ -427,36 +427,38 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {[
-          { key: "overview", name: "Overview Stats", icon: <FaChartLine /> },
-          { key: "patients", name: `Patients (${patientsList.length})`, icon: <FaUsers /> },
-          { key: "doctors", name: `Doctors (${doctorsList.length})`, icon: <FaUserMd /> },
-          { key: "appointments", name: `Appointments (${appointments.length})`, icon: <FaCalendarCheck /> },
-          { key: "pharmacy", name: "Pharmacy Store", icon: <FaPrescriptionBottleAlt /> },
-          { key: "orders", name: `Orders (${ordersList.length})`, icon: <FaShoppingCart /> },
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
-              activeTab === tab.key
-                ? "bg-[#0C8CE9] text-white shadow-md shadow-blue-100"
-                : "text-gray-600 hover:bg-blue-50/50 hover:text-[#0C8CE9]"
-            }`}
-          >
-            {tab.icon}
-            {tab.name}
-          </button>
-        ))}
+        <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 scrollbar-none">
+          {[
+            { key: "overview", name: "Overview Stats", icon: <FaChartLine /> },
+            { key: "patients", name: `Patients (${patientsList.length})`, icon: <FaUsers /> },
+            { key: "doctors", name: `Doctors (${doctorsList.length})`, icon: <FaUserMd /> },
+            { key: "appointments", name: `Appointments (${appointments.length})`, icon: <FaCalendarCheck /> },
+            { key: "pharmacy", name: "Pharmacy Store", icon: <FaPrescriptionBottleAlt /> },
+            { key: "orders", name: `Orders (${ordersList.length})`, icon: <FaShoppingCart /> },
+          ].map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`flex items-center gap-2.5 px-4 py-2.5 lg:py-3 rounded-xl text-xs lg:text-sm font-bold transition-all duration-300 shrink-0 whitespace-nowrap ${
+                activeTab === tab.key
+                  ? "bg-[#0C8CE9] text-white shadow-md shadow-blue-100"
+                  : "text-gray-600 hover:bg-blue-50/50 hover:text-[#0C8CE9]"
+              }`}
+            >
+              {tab.icon}
+              <span>{tab.name}</span>
+            </button>
+          ))}
 
-        <div className="border-t my-4"></div>
-        <button
-          onClick={handleLogoutClick}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all duration-300"
-        >
-          <FaSignOutAlt />
-          <span>Logout</span>
-        </button>
+          <div className="hidden lg:block border-t my-2"></div>
+          <button
+            onClick={handleLogoutClick}
+            className="flex items-center gap-2.5 px-4 py-2.5 lg:py-3 rounded-xl text-xs lg:text-sm font-bold text-red-600 hover:bg-red-50 transition-all duration-300 shrink-0 whitespace-nowrap"
+          >
+            <FaSignOutAlt />
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Content Area */}
