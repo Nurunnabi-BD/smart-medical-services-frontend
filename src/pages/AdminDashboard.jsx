@@ -12,6 +12,7 @@ import {
   FaTimes,
   FaSignOutAlt,
   FaEdit,
+  FaShoppingCart,
 } from "react-icons/fa";
 import {
   LineChart,
@@ -40,6 +41,7 @@ const AdminDashboard = () => {
     totalDoctors: 0,
     totalAppointments: 0,
     totalPrescriptions: 0,
+    totalOrders: 0,
   });
   const [chartData, setChartData] = useState([]);
   
@@ -66,6 +68,7 @@ const AdminDashboard = () => {
 
   // Pharmacy list states
   const [medicinesList, setMedicinesList] = useState([]);
+  const [ordersList, setOrdersList] = useState([]);
 
   // Add/Edit Medicine Modal State
   const [showMedicineModal, setShowMedicineModal] = useState(false);
@@ -89,11 +92,12 @@ const AdminDashboard = () => {
   const fetchAdminData = async () => {
     try {
       setLoading(true);
-      const [statsRes, usersRes, apptsRes, medRes] = await Promise.all([
+      const [statsRes, usersRes, apptsRes, medRes, ordersRes] = await Promise.all([
         api.get("/admin/stats"),
         api.get("/admin/users"),
         api.get("/appointments"), // Fetch all appointments (since role is admin, backend returns all)
         api.get("/medicines?limit=100"), // Fetch first 100 medicines
+        api.get("/orders"),
       ]);
 
       setStats(statsRes.data.stats);
@@ -102,6 +106,7 @@ const AdminDashboard = () => {
       setDoctorsList(usersRes.data.doctors);
       setAppointments(apptsRes.data);
       setMedicinesList(medRes.data.medicines || []);
+      setOrdersList(ordersRes.data || []);
     } catch (err) {
       console.error("Failed to load admin stats:", err);
       Swal.fire("Error", "Failed to fetch admin stats from backend", "error");
@@ -276,6 +281,27 @@ const AdminDashboard = () => {
     });
   };
 
+  const handleUpdateOrderStatus = async (orderId, newStatus) => {
+    try {
+      await api.put(`/orders/${orderId}/status`, { status: newStatus });
+      Swal.fire({
+        icon: "success",
+        title: "Order Status Updated",
+        text: `Order status set to ${newStatus}.`,
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      setOrdersList(
+        ordersList.map((o) => (o._id === orderId ? { ...o, status: newStatus } : o))
+      );
+      // Refresh stats card counts
+      fetchAdminData();
+    } catch (err) {
+      console.error("Failed to update order status:", err);
+      Swal.fire("Error", "Could not update order status.", "error");
+    }
+  };
+
   const handleOpenEditMedicine = (med) => {
     setEditingMedicine(med);
     setMedicineForm({
@@ -407,6 +433,7 @@ const AdminDashboard = () => {
           { key: "doctors", name: `Doctors (${doctorsList.length})`, icon: <FaUserMd /> },
           { key: "appointments", name: `Appointments (${appointments.length})`, icon: <FaCalendarCheck /> },
           { key: "pharmacy", name: "Pharmacy Store", icon: <FaPrescriptionBottleAlt /> },
+          { key: "orders", name: `Orders (${ordersList.length})`, icon: <FaShoppingCart /> },
         ].map((tab) => (
           <button
             key={tab.key}
@@ -439,12 +466,13 @@ const AdminDashboard = () => {
         {activeTab === "overview" && (
           <>
             {/* Stats Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {[
                 { title: "Total Patients", val: stats.totalPatients, icon: <FaUsers size={24} />, color: "bg-blue-500 text-white" },
                 { title: "Total Doctors", val: stats.totalDoctors, icon: <FaUserMd size={24} />, color: "bg-green-500 text-white" },
                 { title: "Appointments", val: stats.totalAppointments, icon: <FaCalendarCheck size={24} />, color: "bg-orange-500 text-white" },
                 { title: "Prescriptions", val: stats.totalPrescriptions, icon: <FaPrescriptionBottleAlt size={24} />, color: "bg-purple-500 text-white" },
+                { title: "Medicine Orders", val: stats.totalOrders || 0, icon: <FaShoppingCart size={24} />, color: "bg-teal-500 text-white" },
                 { title: "Total Revenue", val: `${totalRevenue} BDT`, icon: <FaMoneyBillWave size={24} />, color: "bg-emerald-500 text-white" },
               ].map((c, i) => (
                 <div key={i} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex items-center justify-between">
@@ -744,6 +772,131 @@ const AdminDashboard = () => {
                               <FaTrash size={13} />
                             </button>
                           </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ORDERS TAB */}
+        {activeTab === "orders" && (
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 animate-fadeIn">
+            <h3 className="text-xl font-bold text-black mb-5 border-b pb-3">Customer Medicine Orders</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm text-gray-600">
+                <thead className="bg-gray-100 text-gray-700 text-xs font-bold uppercase border-b">
+                  <tr>
+                    <th className="p-3.5">Order ID</th>
+                    <th className="p-3.5">Patient Details</th>
+                    <th className="p-3.5">Delivery Address</th>
+                    <th className="p-3.5">Items Purchased</th>
+                    <th className="p-3.5">Total Amount</th>
+                    <th className="p-3.5">Order Date</th>
+                    <th className="p-3.5">Status</th>
+                    <th className="p-3.5 text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y font-semibold">
+                  {ordersList.length === 0 ? (
+                    <tr>
+                      <td colSpan="8" className="p-6 text-center text-gray-500">No medicine orders placed yet.</td>
+                    </tr>
+                  ) : (
+                    ordersList.map((order) => (
+                      <tr key={order._id} className="hover:bg-gray-50/50 transition align-top">
+                        <td className="p-3.5 text-xs text-gray-400 font-mono">
+                          #{order._id.slice(-6).toUpperCase()}
+                        </td>
+                        <td className="p-3.5">
+                          <p className="text-black font-bold">{order.patientName || order.patient?.name}</p>
+                          <p className="text-xs text-gray-400 font-semibold">{order.patientEmail || order.patient?.email}</p>
+                          <p className="text-xs text-gray-400 font-semibold">{order.patientPhone}</p>
+                        </td>
+                        <td className="p-3.5 text-xs text-slate-500 max-w-[150px] truncate" title={order.patientAddress}>
+                          {order.patientAddress || "N/A"}
+                        </td>
+                        <td className="p-3.5 text-xs space-y-1">
+                          {order.items?.map((item, idx) => (
+                            <div key={idx} className="flex justify-between gap-4">
+                              <span className="text-slate-800 font-bold">
+                                {item.medicine?.name || "Medicine Item"} x {item.quantity}
+                              </span>
+                              <span className="text-gray-400 font-semibold">
+                                ৳ {item.price * item.quantity}
+                              </span>
+                            </div>
+                          ))}
+                        </td>
+                        <td className="p-3.5 text-sm text-blue-600 font-black">
+                          ৳ {order.totalAmount}
+                        </td>
+                        <td className="p-3.5 text-xs text-slate-500">
+                          {new Date(order.createdAt).toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </td>
+                        <td className="p-3.5">
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide border ${
+                            order.status === "Completed"
+                              ? "bg-emerald-50 text-emerald-600 border-emerald-200"
+                              : order.status === "Cancelled"
+                              ? "bg-red-50 text-red-600 border-red-200"
+                              : "bg-amber-50 text-amber-600 border-amber-200"
+                          }`}>
+                            {order.status}
+                          </span>
+                        </td>
+                        <td className="p-3.5 text-center">
+                          {order.status === "Pending" ? (
+                            <div className="flex gap-2 justify-center">
+                              <button
+                                onClick={() =>
+                                  Swal.fire({
+                                    title: "Complete Order?",
+                                    text: "Confirm that this order has been delivered and payment collected.",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#10B981",
+                                    confirmButtonText: "Yes, Deliver",
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      handleUpdateOrderStatus(order._id, "Completed");
+                                    }
+                                  })
+                                }
+                                className="bg-emerald-50 hover:bg-emerald-600 text-emerald-600 hover:text-white border border-emerald-200 px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider transition"
+                              >
+                                Deliver
+                              </button>
+                              <button
+                                onClick={() =>
+                                  Swal.fire({
+                                    title: "Cancel Order?",
+                                    text: "Are you sure you want to cancel this order?",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#EF4444",
+                                    confirmButtonText: "Yes, Cancel",
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      handleUpdateOrderStatus(order._id, "Cancelled");
+                                    }
+                                  })
+                                }
+                                className="bg-red-50 hover:bg-red-600 text-red-600 hover:text-white border border-red-200 px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider transition"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 text-xs font-semibold">Processed</span>
+                          )}
                         </td>
                       </tr>
                     ))

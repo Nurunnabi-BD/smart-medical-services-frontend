@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import api from "../api/axios";
 
 const CartDrawer = () => {
   const { user } = useAuth();
@@ -138,7 +139,7 @@ const CartDrawer = () => {
                 * Orders with prescription-only medicines will require a valid prescription upload. Delivery charges and taxes calculated at checkout.
               </p>
               <button
-                onClick={() => {
+                onClick={async () => {
                   if (!user) {
                     Swal.fire({
                       icon: "warning",
@@ -151,14 +152,40 @@ const CartDrawer = () => {
                     return;
                   }
 
-                  Swal.fire({
-                    icon: "success",
-                    title: "Order Placed Successfully",
-                    text: `Thank you for your order! Your total of ৳ ${cartTotal} will be collected at your doorstep (Cash on Delivery).`,
-                    confirmButtonColor: "#0C8CE9"
-                  });
-                  clearCart();
-                  setShowCartDrawer(false);
+                  try {
+                    // Prepare order payload
+                    const orderPayload = {
+                      items: cartItems.map(item => ({
+                        medicine: item.medicine._id,
+                        quantity: item.quantity,
+                        price: item.medicine.price,
+                      })),
+                      totalAmount: cartTotal,
+                      patientName: user.name,
+                      patientPhone: user.phone || "",
+                      patientEmail: user.email,
+                      patientAddress: user.location || "",
+                    };
+
+                    await api.post("/orders", orderPayload);
+
+                    Swal.fire({
+                      icon: "success",
+                      title: "Order Placed Successfully",
+                      text: `Thank you for your order! Your total of ৳ ${cartTotal} will be collected at your doorstep (Cash on Delivery).`,
+                      confirmButtonColor: "#0C8CE9"
+                    });
+                    clearCart();
+                    setShowCartDrawer(false);
+                  } catch (err) {
+                    console.error("Order placement failed:", err);
+                    Swal.fire({
+                      icon: "error",
+                      title: "Order Placement Failed",
+                      text: err.response?.data?.message || "Something went wrong while placing your order.",
+                      confirmButtonColor: "#0C8CE9"
+                    });
+                  }
                 }}
                 className="w-full bg-[#0C8CE9] hover:bg-blue-600 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-blue-500/10 active:scale-[0.98]"
               >
