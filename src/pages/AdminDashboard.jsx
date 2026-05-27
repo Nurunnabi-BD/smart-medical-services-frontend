@@ -466,21 +466,21 @@ const AdminDashboard = () => {
         {activeTab === "overview" && (
           <>
             {/* Stats Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
               {[
-                { title: "Total Patients", val: stats.totalPatients, icon: <FaUsers size={24} />, color: "bg-blue-500 text-white" },
-                { title: "Total Doctors", val: stats.totalDoctors, icon: <FaUserMd size={24} />, color: "bg-green-500 text-white" },
-                { title: "Appointments", val: stats.totalAppointments, icon: <FaCalendarCheck size={24} />, color: "bg-orange-500 text-white" },
-                { title: "Prescriptions", val: stats.totalPrescriptions, icon: <FaPrescriptionBottleAlt size={24} />, color: "bg-purple-500 text-white" },
-                { title: "Medicine Orders", val: stats.totalOrders || 0, icon: <FaShoppingCart size={24} />, color: "bg-teal-500 text-white" },
-                { title: "Total Revenue", val: `${totalRevenue} BDT`, icon: <FaMoneyBillWave size={24} />, color: "bg-emerald-500 text-white" },
+                { title: "Total Patients", val: stats.totalPatients, icon: <FaUsers size={18} />, color: "bg-blue-500 text-white" },
+                { title: "Total Doctors", val: stats.totalDoctors, icon: <FaUserMd size={18} />, color: "bg-green-500 text-white" },
+                { title: "Appointments", val: stats.totalAppointments, icon: <FaCalendarCheck size={18} />, color: "bg-orange-500 text-white" },
+                { title: "Prescriptions", val: stats.totalPrescriptions, icon: <FaPrescriptionBottleAlt size={18} />, color: "bg-purple-500 text-white" },
+                { title: "Medicine Orders", val: stats.totalOrders || 0, icon: <FaShoppingCart size={18} />, color: "bg-teal-500 text-white" },
+                { title: "Total Revenue", val: `${totalRevenue} BDT`, icon: <FaMoneyBillWave size={18} />, color: "bg-emerald-500 text-white" },
               ].map((c, i) => (
-                <div key={i} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">{c.title}</p>
-                    <h3 className="text-3xl font-extrabold text-black mt-2">{c.val}</h3>
+                <div key={i} className="bg-white rounded-2xl p-3.5 border border-gray-100 shadow-sm flex items-center justify-between gap-2.5 min-w-0">
+                  <div className="min-w-0">
+                    <p className="text-[10px] text-gray-400 font-extrabold uppercase tracking-wider truncate">{c.title}</p>
+                    <h3 className="text-xl font-black text-black mt-1 truncate" title={c.val}>{c.val}</h3>
                   </div>
-                  <div className={`p-4 rounded-2xl ${c.color} shadow`}>{c.icon}</div>
+                  <div className={`p-2.5 rounded-xl ${c.color} shadow shrink-0`}>{c.icon}</div>
                 </div>
               ))}
             </div>
