@@ -326,6 +326,49 @@ const DoctorDashboard = () => {
     return ageVal;
   };
 
+  // Get unique patients who have taken appointments with this doctor
+  const getUniquePatients = () => {
+    const uniquePatientsMap = {};
+    displayAppointments.forEach((appt) => {
+      const pId = appt.patient?._id || appt.patientEmail || appt.patientPhone || appt._id;
+      if (!pId) return;
+      if (!uniquePatientsMap[pId]) {
+        const pName = appt.patient?.name || appt.patientName || "Unknown Patient";
+        const pGender = appt.patient?.gender || appt.patientGender || "Male";
+        const pDob = appt.patient?.dob || appt.patientDob || "";
+        const pPhone = appt.patient?.phone || appt.patientPhone || "";
+        const pBlood = appt.patient?.blood || "N/A";
+        const pWeight = appt.patient?.weight || 70;
+        const pHeight = appt.patient?.height || 170;
+        const pImage = appt.patient?.image || (pGender === "Female" ? "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150" : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150");
+        const pAge = pDob ? calculateAge(pDob) : "N/A";
+        
+        const patientAppointments = displayAppointments.filter((a) => {
+          const aId = a.patient?._id || a.patientEmail || a.patientPhone || a._id;
+          return aId === pId;
+        });
+
+        uniquePatientsMap[pId] = {
+          id: pId,
+          name: pName,
+          age: pAge,
+          gender: pGender,
+          phone: pPhone,
+          blood: pBlood,
+          weight: pWeight,
+          height: pHeight,
+          avatar: pImage,
+          dob: pDob,
+          appointments: patientAppointments,
+        };
+      }
+    });
+    return Object.values(uniquePatientsMap);
+  };
+
+  const uniquePatients = getUniquePatients();
+  const selectedPatient = uniquePatients.find((p) => p.id === selectedPatientId);
+
 
 
   // Approve or Reject Appointment
@@ -1308,61 +1351,54 @@ const DoctorDashboard = () => {
                 </div>
 
                 <div className="space-y-3">
-                  {[
-                    { id: "patient_john", name: "John Smith", age: 35, gender: "Male", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=150" },
-                    { id: "patient_sarah", name: "Sarah Johnson", age: 28, gender: "Female", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150" },
-                    { id: "patient_michael", name: "Michael Brown", age: 42, gender: "Male", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150" },
-                    { id: "patient_emily", name: "Emily Davis", age: 30, gender: "Female", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150" },
-                  ]
-                    .filter((p) => p.name.toLowerCase().includes(patientSearch.toLowerCase()))
-                    .map((p) => (
-                      <div
-                        key={p.id}
-                        onClick={() => setSelectedPatientId(p.id)}
-                        className={`flex items-center gap-3.5 p-3 rounded-2xl border cursor-pointer transition ${
-                          selectedPatientId === p.id
-                            ? "bg-blue-50 border-blue-100 text-blue-600"
-                            : "bg-slate-50/20 border-slate-50 hover:bg-slate-50"
-                        }`}
-                      >
-                        <img src={p.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
-                        <div>
-                          <h4 className="text-xs font-bold text-slate-800 leading-tight">{p.name}</h4>
-                          <p className="text-[10px] text-slate-400 font-semibold mt-0.5">
-                            {p.gender}, {p.age} Years
-                          </p>
+                  {uniquePatients.length === 0 ? (
+                    <p className="text-xs text-slate-400 font-bold bg-slate-50 px-4 py-3 rounded-xl text-center">
+                      No patients have booked appointments with you yet.
+                    </p>
+                  ) : (
+                    uniquePatients
+                      .filter((p) => p.name.toLowerCase().includes(patientSearch.toLowerCase()))
+                      .map((p) => (
+                        <div
+                          key={p.id}
+                          onClick={() => setSelectedPatientId(p.id)}
+                          className={`flex items-center gap-3.5 p-3 rounded-2xl border cursor-pointer transition ${
+                            selectedPatientId === p.id
+                              ? "bg-blue-50 border-blue-100 text-blue-600"
+                              : "bg-slate-50/20 border-slate-50 hover:bg-slate-50"
+                          }`}
+                        >
+                          <img src={p.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
+                          <div>
+                            <h4 className="text-xs font-bold text-slate-800 leading-tight">{p.name}</h4>
+                            <p className="text-[10px] text-slate-400 font-semibold mt-0.5">
+                              {p.gender}, {p.age} {p.age !== "N/A" ? "Years" : ""}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                  )}
                 </div>
               </div>
 
               {/* Right Detail Panel */}
               <div className="lg:col-span-2 space-y-6">
-                {selectedPatientId ? (
+                {selectedPatient ? (
                   <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-6 animate-fadeIn">
                     <div className="flex gap-4 border-b border-slate-50 pb-5">
                       <img
-                        src={
-                          selectedPatientId === "patient_sarah"
-                            ? "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150"
-                            : selectedPatientId === "patient_michael"
-                            ? "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150"
-                            : selectedPatientId === "patient_emily"
-                            ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150"
-                            : "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=150"
-                        }
-                        alt=""
+                        src={selectedPatient.avatar}
+                        alt={selectedPatient.name}
                         className="w-20 h-20 rounded-2xl object-cover border"
                       />
                       <div>
                         <h3 className="text-xl font-bold text-slate-800">
-                          {selectedPatientId === "patient_sarah" ? "Sarah Johnson" : selectedPatientId === "patient_michael" ? "Michael Brown" : selectedPatientId === "patient_emily" ? "Emily Davis" : "John Smith"}
+                          {selectedPatient.name}
                         </h3>
                         <p className="text-xs text-slate-400 font-semibold mt-0.5">Registered Patient Member</p>
                         <div className="flex items-center gap-2 mt-2">
                           <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-100">
-                            ID: {selectedPatientId.toUpperCase()}
+                            ID: {typeof selectedPatient.id === "string" && selectedPatient.id.startsWith("mock_") ? selectedPatient.id.toUpperCase() : String(selectedPatient.id).substring(0, 8).toUpperCase()}
                           </span>
                         </div>
                       </div>
@@ -1371,10 +1407,10 @@ const DoctorDashboard = () => {
                     {/* Stats */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                       {[
-                        { title: "Blood Group", value: "B+", icon: <FaTint className="text-red-500" />, color: "bg-red-50" },
-                        { title: "Weight", value: "68 Kg", icon: <FaWeight className="text-blue-500" />, color: "bg-blue-50" },
-                        { title: "Height", value: "168 Cm", icon: <FaRulerVertical className="text-emerald-500" />, color: "bg-emerald-50" },
-                        { title: "Age", value: "32 Years", icon: <FaBirthdayCake className="text-purple-500" />, color: "bg-purple-50" },
+                        { title: "Blood Group", value: selectedPatient.blood || "N/A", icon: <FaTint className="text-red-500" />, color: "bg-red-50" },
+                        { title: "Weight", value: `${selectedPatient.weight || 70} Kg`, icon: <FaWeight className="text-blue-500" />, color: "bg-blue-50" },
+                        { title: "Height", value: `${selectedPatient.height || 170} Cm`, icon: <FaRulerVertical className="text-emerald-500" />, color: "bg-emerald-50" },
+                        { title: "Age", value: `${selectedPatient.age || "N/A"} Years`, icon: <FaBirthdayCake className="text-purple-500" />, color: "bg-purple-50" },
                       ].map((item, idx) => (
                         <div key={idx} className="border border-slate-50 bg-slate-50/30 rounded-2xl p-4 flex items-center gap-3">
                           <div className={`p-2.5 rounded-xl ${item.color}`}>{item.icon}</div>
@@ -1390,22 +1426,20 @@ const DoctorDashboard = () => {
                     <div className="space-y-2 border-t border-slate-50 pt-5">
                       <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">Patient Medical History Summary</h4>
                       <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                        This patient records occasional cardiovascular anomalies including high blood pressure thresholds. Prescribed Beta Blockers dosage previously. Monitored for arrhythmia symptoms with standard instructions.
+                        This patient has registered consultation records with the platform. Patient records occasional cardiovascular anomalies or general medical consultation history. Managed under doctor care and instructions.
                       </p>
                     </div>
 
                     {/* Appointments history list */}
                     <div className="space-y-3">
-                      <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">Past Consultations</h4>
+                      <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">Consultations History</h4>
                       <div className="border border-slate-100 rounded-2xl overflow-hidden divide-y">
-                        <div className="flex justify-between items-center p-3.5 bg-slate-50 text-xs font-semibold text-slate-500">
-                          <span>ECG Test & Heart Consultation</span>
-                          <span className="text-slate-400">May 12, 2025</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3.5 bg-slate-50 text-xs font-semibold text-slate-500">
-                          <span>Blood Pressure Check Consultation</span>
-                          <span className="text-slate-400">May 01, 2025</span>
-                        </div>
+                        {selectedPatient.appointments.map((appt, aIdx) => (
+                          <div key={appt._id || aIdx} className="flex justify-between items-center p-3.5 bg-slate-50 text-xs font-semibold text-slate-500">
+                            <span>{appt.appointmentType || appt.reason || "General Consultation"} ({appt.status})</span>
+                            <span className="text-slate-400">{appt.date}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
