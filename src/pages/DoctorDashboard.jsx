@@ -48,7 +48,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 
 const DoctorDashboard = () => {
-  const { logout } = useAuth();
+  const { logout, updateProfile } = useAuth();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -533,7 +533,7 @@ const DoctorDashboard = () => {
         .map((s) => s.trim())
         .filter((s) => s.length > 0);
 
-      const res = await api.put("/doctors/profile", {
+      const updatedData = await updateProfile({
         name,
         specialization,
         experience: Number(experience),
@@ -543,11 +543,11 @@ const DoctorDashboard = () => {
         image,
       });
 
-      setDoctorProfile(res.data);
+      setDoctorProfile(updatedData);
       Swal.fire("Success", "Profile settings saved successfully!", "success");
       setActiveTab("dashboard");
     } catch (err) {
-      Swal.fire("Error", err.response?.data?.message || "Failed to update profile.", "error");
+      Swal.fire("Error", err || "Failed to update profile.", "error");
     }
   };
 

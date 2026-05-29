@@ -100,6 +100,7 @@ export const AuthProvider = ({ children }) => {
         setUser((prev) => ({
           ...prev,
           name: res.data.name || prev.name,
+          image: res.data.image || prev.image,
           doctorProfile: res.data,
         }));
       } else {
